@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema(
         },
         password: {
             type: String
-        }
+        },
+        usersFavorites: [{ type: mongoose.Schema.ObjectId, ref: 'movie'}]
     },
     {
         timestamps: true

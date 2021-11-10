@@ -17,7 +17,10 @@ async function createUser(req, res) {
         let savedUser = await createdUser.save();
         res.json({ message: "SUCCESS", savedUser })
     } catch(e) {
-        console.log(e)
+        res.status(500).json({
+            message: "ERROR",
+            error: e.message
+        });
     }
 }
 
@@ -53,7 +56,10 @@ const login = async(req, res) => {
             }
         } 
     } catch(e) {
-        console.log(e)
+        res.status(500).json({
+            message: "ERROR",
+            error: e.message
+        });
     }
 }
 
