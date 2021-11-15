@@ -48,7 +48,38 @@ async function getAllFavoriteMovies(req, res) {
     }
 }
 
+const deleteFavorite = async(req, res) => {
+	try {
+		const fetchedMovie = await Movie.find({imdbId: req.params.imdbId});
+		const decodedToken = res.locals.decodedData;
+
+		const deletedMovie = await Movie.findByIdAndDelete(fetchedMovie[0]._id);
+
+		let foundUser = await User.findOne({ email: decodedToken.email });
+
+		let filteredFavorites = foundUser.usersFavorites.filter((item) => {
+			item._id.toString() !== deletedMovie._id.toString();
+		});
+
+		foundUser.usersFavorites = filteredFavorites;
+
+		await foundUser.save();
+
+		res.json({
+			message: "SUCCESS",
+			payload: deletedMovie
+		});
+
+	} catch(e) {
+		res.status(500).json({
+			message: "ERROR",
+			error: e.message
+		})
+	}
+}
+
 module.exports = {
 	addToFavorites,
-    getAllFavoriteMovies
+    getAllFavoriteMovies,
+	deleteFavorite
 };

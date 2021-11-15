@@ -3,21 +3,19 @@ const router = express.Router();
 
 const {
     addToFavorites,
-    getAllFavoriteMovies
+    getAllFavoriteMovies,
+    deleteFavorite
 } = require('./controller/moviesController')
 
 const {
     jwtMiddleware,
-    emptyValidator,
-    undefinedValidator,
-    createDataValidator,
-    loginDataValidator
 } = require ('../shared/index')
+
 router.post('/add-favorite', jwtMiddleware, addToFavorites);
 
+router.delete('/delete/:imdbId', jwtMiddleware, deleteFavorite);
+
 router.get('/', jwtMiddleware, getAllFavoriteMovies);
-
-
 
 
 module.exports = router;
