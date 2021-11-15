@@ -50,4 +50,5 @@ async function getAllFavoriteMovies(req, res) {
 
 module.exports = {
 	addToFavorites,
+    getAllFavoriteMovies
 };
