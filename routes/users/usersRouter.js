@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 
 const {
     createUser,
-    login
+    login,
 } = require('./controller/usersController');
 
 const { 
@@ -15,8 +14,8 @@ const {
 } = require('../shared/index');
 
 
-router.post('/create-user', undefinedValidator, emptyValidator, createDataValidator, createUser);
-router.post('/login', undefinedValidator, emptyValidator, loginDataValidator, login);
+router.post('/create-user', emptyValidator, undefinedValidator, createDataValidator, createUser);
+router.post('/login', emptyValidator, undefinedValidator, loginDataValidator, login);
 
 
 module.exports = router;

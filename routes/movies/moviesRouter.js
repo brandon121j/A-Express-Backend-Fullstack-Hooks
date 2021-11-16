@@ -9,7 +9,7 @@ const {
 
 const {
     jwtMiddleware,
-} = require ('../shared/index')
+} = require ('../shared/jwtMiddleware')
 
 router.post('/add-favorite', jwtMiddleware, addToFavorites);
 
