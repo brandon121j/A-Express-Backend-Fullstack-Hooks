@@ -45,14 +45,17 @@ const login = async(req, res) => {
             } else {
                 let jwtToken = jwt.sign(
                     {
+                        firstName: foundUser.firstName,
+                        lastName: foundUser.lastName,
                         email: foundUser.email,
-                        username: foundUser.username
+                        username: foundUser.username,
+                        userID: foundUser._id
                     },
                     process.env.JWT_SECRET,
                     { expiresIn: "24h"}
                 );
 
-                res.json({ message: "SUCCESS", payload: jwtToken })
+                res.json({ message: "SUCCESS", token: jwtToken })
             }
         } 
     } catch(e) {
