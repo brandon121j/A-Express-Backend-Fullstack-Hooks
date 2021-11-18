@@ -2,10 +2,10 @@ const Movie = require('../model/Movies');
 const User = require('../../users/model/Users');
 
 const addToFavorites = async (req, res) => {
-	const { title, moviePoster, imdbLink } = req.body;
+	let { title, moviePoster, imdbLink, imdbID, userID } = req.body;
 
 	try {
-		const decodedData = res.locals.decodedData;
+		let decodedData = res.locals.decodedData;
 
 		let foundUser = await User.findOne({ email: decodedData.email });
 
@@ -13,12 +13,13 @@ const addToFavorites = async (req, res) => {
 			title,
 			moviePoster,
 			imdbLink,
-			userID: foundUser._id,
+			imdbID,
+			userID
 		});
 
 		let savedFavorite = await createdFavorite.save();
 
-		foundUser.usersFavories.push(savedFavorite._id);
+		foundUser.usersFavorites.push(savedFavorite._id);
 
 		await foundUser.save();
 
@@ -37,9 +38,12 @@ async function getAllFavoriteMovies(req, res) {
 
         let foundUser = await User.findOne({ email: decodedData.email });
 
-        let usersFavorites = await Movie.find({ userID: foundUser._id });
+        let usersFavorites = await Movie.find({});
 
-        res.json({ message: "SUCCESS", payload: usersFavorites });
+		let filteredMovies = usersFavorites.filter((favorites) => favorites.userID.toString() === foundUser._id.toString())
+
+        res.json({ message: "SUCCESS", favorites: filteredMovies });
+
     } catch (e) {
         res.status(500).json({
             message: "ERROR",
@@ -50,7 +54,8 @@ async function getAllFavoriteMovies(req, res) {
 
 const deleteFavorite = async(req, res) => {
 	try {
-		const fetchedMovie = await Movie.find({imdbId: req.params.imdbId});
+		const fetchedMovie = await Movie.find({imdbID: req.params.imdbID});
+		
 		const decodedToken = res.locals.decodedData;
 
 		const deletedMovie = await Movie.findByIdAndDelete(fetchedMovie[0]._id);
@@ -78,8 +83,9 @@ const deleteFavorite = async(req, res) => {
 	}
 }
 
+
 module.exports = {
 	addToFavorites,
     getAllFavoriteMovies,
-	deleteFavorite
+	deleteFavorite,
 };

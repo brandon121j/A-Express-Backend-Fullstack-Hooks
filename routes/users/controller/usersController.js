@@ -15,7 +15,7 @@ async function createUser(req, res) {
             password: hashed
         });
         let savedUser = await createdUser.save();
-        res.json({ message: "SUCCESS", savedUser })
+        res.json({ message: "SUCCESS", payload: savedUser })
     } catch(e) {
         res.status(500).json({
             message: "ERROR",

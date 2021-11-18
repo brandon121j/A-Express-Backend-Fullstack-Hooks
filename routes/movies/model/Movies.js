@@ -11,6 +11,9 @@ const movieSchema = new mongoose.Schema({
     imdbLink: {
         type: String
     },
+    imdbID : {
+        type: String
+    },
     userID: {
         type: mongoose.Schema.ObjectId,
         ref: 'user'
